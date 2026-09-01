@@ -2,14 +2,14 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const STORAGE='neonRoyaleCasinoV3';
 const gameMeta={
-  keno:{title:'Keno Lounge',eyebrow:'NUMBERS & WHEELS',subtitle:'Lounge 08 · Classic 20-of-80 draw',renderer:renderKeno},
-  blackjack:{title:'Blackjack',eyebrow:'GRAND SALON',subtitle:'Table 01 · 6-deck shoe · dealer hits soft 17',renderer:renderBlackjack},
-  roulette:{title:'American Roulette',eyebrow:'MONTE CARLO HALL',subtitle:'Wheel 01 · 0 and 00 · 38 pockets',renderer:renderRoulette},
-  slots:{title:'Royal Reels',eyebrow:'ELECTRIC ARCADE',subtitle:'Bank A · 5-reel weighted-symbol simulation',renderer:renderSlots},
-  horses:{title:'Royal Turf Club',eyebrow:'RACEBOOK',subtitle:'Track 01 · generated field and probability-based odds',renderer:renderHorses},
-  poker:{title:'Poker School',eyebrow:'CASINO ACADEMY',subtitle:'Texas Hold’em · hands, betting flow, strategy basics',renderer:renderPoker},
-  baccarat:{title:'Baccarat',eyebrow:'GRAND SALON',subtitle:'Table 02 · 8-deck Punto Banco',renderer:renderBaccarat},
-  videopoker:{title:'Video Poker',eyebrow:'ELECTRIC ARCADE',subtitle:'Bank B · Jacks or Better draw poker',renderer:renderVideoPoker}
+  keno:{title:'Keno Lounge',eyebrow:'NUMBERS & WHEELS',subtitle:'Lounge 08 · Classic 20-of-80 draw'},
+  blackjack:{title:'Blackjack',eyebrow:'GRAND SALON',subtitle:'Table 01 · 6-deck shoe · dealer hits soft 17'},
+  roulette:{title:'American Roulette',eyebrow:'MONTE CARLO HALL',subtitle:'Wheel 01 · 0 and 00 · 38 pockets'},
+  slots:{title:'Royal Reels',eyebrow:'ELECTRIC ARCADE',subtitle:'Bank A · 5-reel weighted-symbol simulation'},
+  horses:{title:'Royal Turf Club',eyebrow:'RACEBOOK',subtitle:'Track 01 · generated field and probability-based odds'},
+  poker:{title:'Poker School',eyebrow:'CASINO ACADEMY',subtitle:'Texas Hold’em · hands, betting flow, strategy basics'},
+  baccarat:{title:'Baccarat',eyebrow:'GRAND SALON',subtitle:'Table 02 · 8-deck Punto Banco'},
+  videopoker:{title:'Video Poker',eyebrow:'ELECTRIC ARCADE',subtitle:'Bank B · Jacks or Better draw poker'}
 };
 const defaults={bankroll:10000,startBankroll:10000,totalWagered:0,totalWon:0,gamesPlayed:0,biggestWin:0,rouletteBet:null,horseBet:null,baccaratBet:'player',gameCounts:{}};
 let state=load();
@@ -37,7 +37,7 @@ function clampBet(value){const n=Number(value);return Number.isFinite(n)&&n>0?n:
 function betControls(id='bet',value=100){return `<div class="bet-cluster"><div class="bet-box"><label>BET</label><span>$</span><input class="bet-input" id="${id}" type="number" min="1" step="1" value="${value}"></div><button class="quick-bet" data-bet-target="${id}" data-bet-val="25">$25</button><button class="quick-bet" data-bet-target="${id}" data-bet-val="100">$100</button><button class="quick-bet" data-bet-target="${id}" data-bet-val="500">$500</button></div>`}
 function wireQuickBets(root=document){$$('.quick-bet',root).forEach(b=>b.onclick=()=>{const el=$('#'+b.dataset.betTarget);if(el)el.value=b.dataset.betVal})}
 function getBet(id='bet'){const n=clampBet($('#'+id)?.value);if(!n){toast('Enter a bet greater than $0');return null}return n}
-function openRoom(game){const meta=gameMeta[game];if(!meta)return;currentGame=game;document.body.dataset.room=game;$('#lobbyView').classList.remove('active');$('#gameView').classList.add('active');$('#gameTitle').textContent=meta.title;$('#gameEyebrow').textContent=meta.eyebrow;$('#gameSubtitle').textContent=meta.subtitle;meta.renderer();scrollTo({top:0,behavior:'smooth'})}
+function openRoom(game){const meta=gameMeta[game];if(!meta)return;currentGame=game;document.body.dataset.room=game;$('#lobbyView').classList.remove('active');$('#gameView').classList.add('active');$('#gameTitle').textContent=meta.title;$('#gameEyebrow').textContent=meta.eyebrow;$('#gameSubtitle').textContent=meta.subtitle;({keno:renderKeno,blackjack:renderBlackjack,roulette:renderRoulette,slots:renderSlots,horses:renderHorses,poker:renderPoker,baccarat:renderBaccarat,videopoker:renderVideoPoker})[game]();scrollTo({top:0,behavior:'smooth'})}
 function goLobby(){currentGame=null;document.body.dataset.room='lobby';$('#gameView').classList.remove('active');$('#lobbyView').classList.add('active');scrollTo({top:0,behavior:'smooth'})}
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>openRoom(b.dataset.game)));$$('[data-go="lobby"]').forEach(b=>b.addEventListener('click',goLobby));$('#backBtn').onclick=goLobby;
 
@@ -72,4 +72,3 @@ function renderKeno(){let picks=[];$('#gameMount').innerHTML=`<div class="casino
   $$('.keno-num').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;if(picks.includes(n))picks=picks.filter(x=>x!==n);else if(picks.length<10)picks.push(n);else return toast('Maximum 10 Keno spots');paint()});
   $('#quickPick').onclick=()=>{picks=shuffle(Array.from({length:80},(_,i)=>i+1)).slice(0,10);paint()};$('#clearKeno').onclick=()=>{picks=[];paint();$('#drawBalls').innerHTML='';$('#kenoResult').innerHTML=''};
   $('#drawKeno').onclick=()=>{if(!picks.length)return toast('Pick at least one number');const bet=getBet('kenoBet');if(!bet)return;adjust(-bet,{wager:true});recordGame('keno');const draw=shuffle(Array.from({length:80},(_,i)=>i+1)).slice(0,20),hits=draw.filter(n=>picks.includes(n)),mult=(kenoPay[picks.length]||{})[hits.length]||0,ret=bet*mult;$$('.keno-num').forEach(b=>{b.classList.remove('drawn','hit');const n=+b.dataset.n;if(draw.includes(n))b.classList.add('drawn');if(hits.includes(n))b.classList.add('hit')});const balls=$('#drawBalls');balls.innerHTML='';draw.forEach((n,i)=>setTimeout(()=>{balls.insertAdjacentHTML('beforeend',`<span class="draw-ball ${hits.includes(n)?'hit':''}">${n}</span>`)},i*45));if(ret)adjust(ret,{win:true});$('#kenoResult').innerHTML=`<div class="result-banner">Hit <b>${hits.length}</b> of ${picks.length}. ${ret?`<strong class="win">Return ${money(ret)}</strong>`:`<strong class="loss">No payout</strong>`}</div>`;if(ret>=bet*50)confetti()};paint()}
-
