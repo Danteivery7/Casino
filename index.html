@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#090805" />
+  <title>Neon Royale — Casino Simulator</title>
+  <meta name="description" content="A fake-credit casino simulator with transparent probability models, tutorials, and no real-money wagering." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-room="lobby">
+  <div class="casino-atmosphere" aria-hidden="true">
+    <div class="chandelier-glow glow-one"></div>
+    <div class="chandelier-glow glow-two"></div>
+    <div class="dust-field"></div>
+  </div>
+
+  <header class="topbar">
+    <button class="brand" data-go="lobby" aria-label="Return to casino lobby">
+      <span class="crest"><span>NR</span></span>
+      <span class="brand-copy"><b>NEON ROYALE</b><small>CASINO &amp; RACEBOOK · SIMULATION</small></span>
+    </button>
+
+    <nav class="top-nav" aria-label="Casino navigation">
+      <button data-go="lobby">Lobby</button>
+      <button id="guideTopBtn">Game Guide</button>
+      <button id="statsTopBtn">Player Card</button>
+    </nav>
+
+    <div class="hud">
+      <div class="session-pill">
+        <small>SESSION</small>
+        <strong id="sessionPL">+$0</strong>
+      </div>
+      <button class="bankroll gta-money neutral" id="bankrollBox" title="Click to manage simulated bankroll">
+        <small>AVAILABLE CREDIT</small>
+        <strong id="bankroll">$10,000</strong>
+        <span id="moneyFlash" class="money-flash"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="view active" id="lobbyView">
+      <section class="lobby-hero">
+        <div class="lobby-copy reveal">
+          <div class="velvet-tag"><span></span> PRIVATE SIMULATION FLOOR</div>
+          <h1>Welcome to<br><em>Neon Royale.</em></h1>
+          <p>A polished casino simulator built around fake credits, transparent odds, persistent stats, and game tutorials. No deposits, no withdrawals, no real-world wagering.</p>
+          <div class="hero-actions">
+            <button class="gold-btn" data-game="keno">Enter Keno Lounge</button>
+            <button class="glass-btn" id="playerCardBtn">Set Starting Credit</button>
+          </div>
+          <div class="trust-row">
+            <span>◆ 20-of-80 Keno</span><span>◆ 6-deck Blackjack</span><span>◆ 38-pocket Roulette</span><span>◆ Generated Racing</span>
+          </div>
+        </div>
+
+        <div class="casino-door reveal delay-1" aria-hidden="true">
+          <div class="door-arch"><div class="door-sign">NEON<br><b>ROYALE</b></div></div>
+          <div class="door-left"></div><div class="door-right"></div>
+          <div class="red-carpet"></div>
+        </div>
+      </section>
+
+      <div class="floor-header reveal">
+        <div><p class="kicker">MAIN CASINO</p><h2>Choose your room</h2></div>
+        <div class="floor-status"><span class="live-dot"></span> SIMULATOR FLOOR OPEN</div>
+      </div>
+
+      <section class="casino-floor reveal delay-1">
+        <article class="floor-zone table-zone">
+          <div class="zone-heading"><span class="zone-icon">♠</span><div><p>TABLE GAMES</p><h3>Grand Salon</h3></div></div>
+          <div class="room-grid two">
+            <button class="room-card blackjack-room" data-game="blackjack">
+              <span class="room-number">TABLE 01</span><span class="room-art cards-art">A♠ <i>K♥</i></span>
+              <span class="room-info"><b>Blackjack</b><small>6 decks · H17 · Blackjack 3:2</small></span>
+            </button>
+            <button class="room-card baccarat-room" data-game="baccarat">
+              <span class="room-number">TABLE 02</span><span class="room-art baccarat-art">B</span>
+              <span class="room-info"><b>Baccarat</b><small>Player · Banker · Tie</small></span>
+            </button>
+          </div>
+        </article>
+
+        <article class="floor-zone wheel-zone">
+          <div class="zone-heading"><span class="zone-icon">◎</span><div><p>NUMBERS &amp; WHEELS</p><h3>Monte Carlo Hall</h3></div></div>
+          <div class="room-grid two">
+            <button class="room-card roulette-room" data-game="roulette">
+              <span class="room-number">WHEEL 01</span><span class="room-art wheel-art"><i></i></span>
+              <span class="room-info"><b>American Roulette</b><small>0 + 00 · 38 pockets</small></span>
+            </button>
+            <button class="room-card keno-room featured-room" data-game="keno">
+              <span class="featured-label">HOUSE FAVORITE</span><span class="room-number">LOUNGE 08</span>
+              <span class="room-art keno-art"><i>8</i><i>23</i><i>47</i></span>
+              <span class="room-info"><b>Keno Lounge</b><small>Pick up to 10 · 20-number draw</small></span>
+            </button>
+          </div>
+        </article>
+
+        <article class="floor-zone machines-zone">
+          <div class="zone-heading"><span class="zone-icon">7</span><div><p>MACHINES</p><h3>Electric Arcade</h3></div></div>
+          <div class="room-grid two">
+            <button class="room-card slots-room" data-game="slots">
+              <span class="room-number">BANK A</span><span class="room-art slots-art"><i>7</i><i>◆</i><i>BAR</i></span>
+              <span class="room-info"><b>Royal Reels</b><small>5 reels · weighted random symbols</small></span>
+            </button>
+            <button class="room-card video-poker-room" data-game="videopoker">
+              <span class="room-number">BANK B</span><span class="room-art vp-art">J♦</span>
+              <span class="room-info"><b>Video Poker</b><small>Jacks or Better · draw poker</small></span>
+            </button>
+          </div>
+        </article>
+
+        <article class="floor-zone racing-zone">
+          <div class="zone-heading"><span class="zone-icon">♞</span><div><p>RACEBOOK</p><h3>Royal Turf Club</h3></div></div>
+          <div class="room-grid two">
+            <button class="room-card horse-room" data-game="horses">
+              <span class="room-number">TRACK 01</span><span class="room-art horse-art">♞ <i>━━━</i></span>
+              <span class="room-info"><b>Horse Racing</b><small>Generated fields · live simulated race</small></span>
+            </button>
+            <button class="room-card poker-room" data-game="poker">
+              <span class="room-number">ACADEMY</span><span class="room-art poker-art">♣</span>
+              <span class="room-info"><b>Poker School</b><small>Hold'em hands · betting · guided lessons</small></span>
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <section class="concierge-strip reveal">
+        <div><span class="concierge-icon">i</span><div><b>New to casino games?</b><small>Every room includes a tutorial, payout explanation, and house-rule panel.</small></div></div>
+        <button class="glass-btn" id="guideLobbyBtn">Open Casino Guide</button>
+      </section>
+    </section>
+
+    <section class="view" id="gameView">
+      <div class="room-shell">
+        <header class="room-header">
+          <button class="back-lobby" id="backBtn"><span>←</span> Casino Lobby</button>
+          <div class="room-title"><p class="kicker" id="gameEyebrow">GRAND SALON</p><h2 id="gameTitle">Blackjack</h2><small id="gameSubtitle">Table 01</small></div>
+          <button class="tutorial-btn" id="gameHelpBtn">? <span>How to Play</span></button>
+        </header>
+        <div id="gameMount" class="game-mount"></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="modal" class="modal">
+    <form method="dialog">
+      <button class="modal-close" aria-label="Close">×</button>
+      <div id="modalContent"></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+  <footer class="legal-footer">Neon Royale uses <b>fake simulation credits only</b>. It cannot accept deposits, pay winnings, or connect to real-money wagering.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
