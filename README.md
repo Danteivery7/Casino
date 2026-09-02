@@ -4,22 +4,27 @@ A static, fake-credit casino simulator designed for Cloudflare Pages.
 
 ## Included
 - Full casino lobby with themed rooms
-- Keno: 20 numbers drawn from 1–80, 1–10 spot tickets
-- Blackjack: six-deck shoe, dealer hits soft 17, blackjack pays 3:2
-- American roulette: 0/00, 38 equally likely pockets
-- Royal Reels slots with disclosed symbol weights
-- Generated horse racing with model probabilities, derived decimal odds, and animated races
-- Baccarat using standard Punto Banco drawing rules
-- Jacks-or-Better video poker
+- Keno: 20 unique numbers drawn from 1–80, 1–10 spot tickets, each spot-count paytable normalized to about 90% theoretical RTP
+- Blackjack: one six-deck shoe, cut-card reshuffle at 78 cards remaining, dealer stands on soft 17, blackjack pays 3:2
+- American roulette: 0/00, 38 equally likely pockets and standard 35:1 / 2:1 / 1:1 payouts
+- Royal Reels: Classic 3-reel (~91.82% theoretical RTP) and Modern 5-reel / 9-payline (~93.87% theoretical RTP)
+- Horse racing: posted model probabilities, fractional and decimal odds, 10% simulated track take, 10-second gate countdown, and a 42–48 second full-screen race broadcast
+- Baccarat using standard eight-deck Punto Banco drawing rules, including Player/Banker pushes on ties and the normal 5% Banker commission
+- Full-pay 9/6 Jacks-or-Better video poker paytable
 - Texas Hold'em Poker School tutorials
 - Persistent fake bankroll and session stats via localStorage
 - Negative balances permitted for simulation
 - Red/yellow/green GTA-style balance HUD
-- Lightweight authenticity animation layer: sequential card dealing, dealer turns, Keno ball calls, reel-by-reel slot stops, roulette settling, race countdowns, Baccarat deal order, Video Poker card replacements, and animated tutorials
+- Lightweight authenticity animation layer: sequential card dealing, dealer turns, Keno ball calls, physical-style slot reels, roulette settling, Baccarat deal order, Video Poker card replacements, and full race presentation
 - Reduced-motion support for accessibility and low-overhead CSS/requestAnimationFrame motion
 
+## Fairness / randomness
+Outcome-generating randomness is routed through browser `crypto.getRandomValues()` with rejection sampling for integer selections, then Fisher-Yates shuffling for card decks and number draws. Cosmetic effects such as confetti may still use ordinary visual randomness because they do not affect outcomes.
+
+The simulator is not a certified gambling product. The published RTP/house-edge figures describe the implemented math; short sessions can vary dramatically from those long-run averages.
+
 ## Important
-This project uses fake simulation credits only. It has no deposits, withdrawals, payment integration, or real-money betting capability. Browser randomness uses `Math.random()` and is not a certified gambling RNG.
+This project uses fake simulation credits only. It has no deposits, withdrawals, payment integration, or real-money betting capability.
 
 ## Cloudflare Pages
 This is a static site. Use the repository root as the deploy directory with no framework preset and no build command.
