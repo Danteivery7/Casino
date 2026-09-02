@@ -9,6 +9,10 @@
   }
   const style=src=>{if(document.querySelector(`link[href="${src}"]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=src;document.head.appendChild(x)};
   const script=src=>new Promise((resolve,reject)=>{if(document.querySelector(`script[src="${src}"]`))return resolve();const x=document.createElement('script');x.src=src;x.async=false;x.onload=resolve;x.onerror=reject;document.body.appendChild(x)});
-  style('horse-v5.css');style('sportsbook-v3.css');style('sportsbook-v4.css');
-  script('horse-v5.js').then(()=>script('sportsbook-v3.js')).then(()=>script('sportsbook-v4.js')).catch(err=>console.error('Sportsbook enhancement load failed',err));
+  style('horse-v5.css');style('sportsbook-v3.css');style('sportsbook-v4.css');style('integrity-v1.css');
+  script('horse-v5.js')
+    .then(()=>script('sportsbook-v3.js'))
+    .then(()=>script('sportsbook-v4.js'))
+    .then(()=>script('integrity-v1.js'))
+    .catch(err=>console.error('Casino enhancement load failed',err));
 })();
