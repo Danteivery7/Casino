@@ -1,0 +1,40 @@
+/* --- AUTHENTICITY / MOTION PASS --- */
+.casino-room{contain:layout paint style}.playing-card,.keno-num,.draw-ball,.roulette-wheel,.roulette-ball,.reel,.race-horse,.result-banner,.dealer-status,.bac-caller,.vp-status,.race-call{backface-visibility:hidden;transform:translateZ(0)}
+.action-pulse{animation:actionPulse .38s ease}.status-pulse{animation:statusPulse .38s ease}.result-reveal{animation:resultReveal .38s cubic-bezier(.2,.9,.2,1)}.result-pop{animation:resultPop .42s cubic-bezier(.17,.84,.3,1.35)}
+@keyframes actionPulse{50%{transform:scale(1.035);filter:brightness(1.12)}}
+@keyframes statusPulse{0%{opacity:.55;transform:translateY(-3px)}100%{opacity:1;transform:none}}
+@keyframes resultReveal{0%{opacity:0;transform:translateY(7px) scale(.985)}100%{opacity:1;transform:none}}
+@keyframes resultPop{0%{transform:scale(.88);opacity:.2}68%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+.dealer-status,.bac-caller,.vp-status,.race-call,.roulette-call{position:relative;z-index:4;margin:0 auto 12px;width:max-content;max-width:92%;border:1px solid #e1c16b2b;border-radius:999px;padding:7px 12px;background:#0204028c;color:#d8c28b;font-size:8px;font-weight:900;letter-spacing:.14em;text-align:center;box-shadow:0 6px 18px #0005}.dealer-status span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#6c746a;margin-right:7px}.dealer-status.live span{background:#50e697;box-shadow:0 0 10px #50e697}.roulette-call.live{color:#ffe09a;border-color:#d6ab5060}
+.card-enter{animation:dealCard .28s cubic-bezier(.2,.76,.2,1) both}.card-land{animation:cardLand .34s ease}.card-flip-out{animation:cardFlipOut .16s ease forwards}.card-flip-in{animation:cardFlipIn .24s ease both}.card-hold-pulse{animation:cardHoldPulse .3s ease}.hold-pop{animation:holdPop .28s ease}
+@keyframes cardLand{45%{transform:translateY(3px) rotate(.8deg)}100%{transform:none}}
+@keyframes cardFlipOut{to{transform:rotateY(90deg) scale(.98);opacity:.75}}
+@keyframes cardFlipIn{from{transform:rotateY(-90deg) scale(.98);opacity:.7}to{transform:none;opacity:1}}
+@keyframes cardHoldPulse{50%{transform:translateY(-5px)}}
+@keyframes holdPop{50%{transform:scale(1.08)}}
+
+.keno-caller{display:flex;align-items:center;justify-content:space-between;margin:12px 0 4px;padding:8px 11px;border:1px solid #75c8ef20;border-radius:9px;background:#07151dcc}.keno-caller small{font-size:7px;color:#6f8792;letter-spacing:.15em;font-weight:900}.keno-caller strong{font:800 20px 'Cormorant Garamond';color:#e6cb7d;min-width:70px;text-align:right}.caller-pop{animation:callerPop .28s ease}.pick-pop{animation:pickPop .25s ease}.hit-pop{animation:hitPop .42s ease}.keno-num.draw-flash{box-shadow:inset 0 0 0 2px #59c6ff,0 0 13px #59c6ff40}.keno-live{color:#85c8e6}
+@keyframes callerPop{0%{transform:scale(.94);opacity:.45}100%{transform:none;opacity:1}}
+@keyframes pickPop{50%{transform:scale(1.12);box-shadow:0 0 14px #e1c16d55}}
+@keyframes hitPop{45%{transform:scale(1.16);box-shadow:0 0 24px #45d28a99}100%{transform:scale(1)}}
+
+.chip-drop{animation:chipDrop .3s cubic-bezier(.2,.85,.3,1.3)}.winner-flash{animation:winnerFlash .85s ease infinite alternate;position:relative;z-index:2}.roulette-wheel.spinning .roulette-ball{animation:ballOrbit .62s linear infinite}.roulette-result{transition:filter .2s}
+@keyframes chipDrop{0%{transform:translateY(-8px) scale(.8);opacity:.4}70%{transform:translateY(2px) scale(1.05)}100%{transform:none;opacity:1}}
+@keyframes winnerFlash{from{box-shadow:0 0 0 2px #ffe18c,0 0 9px #ffe18c55}to{box-shadow:0 0 0 3px #fff0b4,0 0 24px #ffe18caa;filter:brightness(1.35)}}
+@keyframes ballOrbit{50%{transform:translateX(-50%) translateY(6px) scale(.9);filter:brightness(1.3)}}
+
+.slot-lights{height:8px;margin:-5px auto 10px;max-width:78%;border-radius:999px;background:repeating-linear-gradient(90deg,#e8c66a 0 9px,#5f4110 9px 18px);opacity:.45;box-shadow:0 0 9px #e6b64733}.machine-live .slot-lights{animation:slotLights .42s linear infinite}.reel-stop{animation:reelStop .25s cubic-bezier(.2,.9,.25,1.25)}.slot-win{animation:slotWinGlow .68s ease 2}.slot-win .slot-marquee{text-shadow:0 0 10px #fff1a0,0 0 28px #e9b94a}
+@keyframes slotLights{50%{filter:brightness(2);opacity:1}}
+@keyframes reelStop{0%{transform:translateY(-8px) scale(.98);filter:blur(2px)}75%{transform:translateY(3px) scale(1.02);filter:none}100%{transform:none}}
+@keyframes slotWinGlow{50%{box-shadow:inset 0 0 0 3px #f3d57f,0 0 38px #d9ae4f5e,0 28px 55px #000a}}
+
+.race-call{margin-bottom:10px}.countdown-pop{animation:countdownPop .38s ease;font-size:16px}.starting-gate{position:absolute;z-index:6;left:37px;top:70px;bottom:0;width:4px;background:#d8c28c;box-shadow:0 0 0 2px #30230f,6px 0 13px #0008;transition:transform .18s ease,opacity .18s}.starting-gate.open{transform:translateX(-30px) rotate(-16deg);opacity:.15}.horse-line.locked{pointer-events:none;opacity:.68}.horse-winner{animation:horseWinner .35s ease 3}
+@keyframes countdownPop{0%{transform:scale(.6);opacity:.25}70%{transform:scale(1.25);opacity:1}100%{transform:scale(1)}}
+@keyframes horseWinner{50%{filter:drop-shadow(0 0 10px #ffe181);transform:translateY(-4px)}}
+
+.bac-caller{margin-bottom:8px}.baccarat-table .playing-card{transform-origin:center}.bac-side .hand-row{justify-content:center}.bac-bet-btn:disabled{opacity:.55}
+.vp-status{margin-bottom:12px}.vp-card-wrap{transition:transform .2s}.vp-card-wrap:has(.hold-btn.held){transform:translateY(-7px)}
+.lesson-panel{transition:opacity .12s ease,transform .12s ease}.lesson-panel.lesson-out{opacity:0;transform:translateX(7px)}.lesson-panel.lesson-in{animation:lessonIn .22s ease}
+@keyframes lessonIn{from{opacity:0;transform:translateX(-9px)}to{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.race-horse{transition:none!important}}
