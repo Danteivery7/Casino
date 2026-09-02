@@ -15,6 +15,8 @@ A static, fake-credit casino simulator designed for Cloudflare Pages.
 - Persistent fake bankroll and session stats via localStorage
 - Negative balances permitted for simulation
 - Red/yellow/green GTA-style balance HUD
+- Lightweight authenticity animation layer: sequential card dealing, dealer turns, Keno ball calls, reel-by-reel slot stops, roulette settling, race countdowns, Baccarat deal order, Video Poker card replacements, and animated tutorials
+- Reduced-motion support for accessibility and low-overhead CSS/requestAnimationFrame motion
 
 ## Important
 This project uses fake simulation credits only. It has no deposits, withdrawals, payment integration, or real-money betting capability. Browser randomness uses `Math.random()` and is not a certified gambling RNG.
