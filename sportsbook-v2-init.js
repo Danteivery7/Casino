@@ -7,16 +7,8 @@
     const row=$('.sports-chip-row');
     if(row&&!row.textContent.includes('Motorsports'))row.insertAdjacentHTML('beforeend','<span>🏎️ Motorsports</span>');
   }
-  if(!document.querySelector('link[href="horse-v5.css"]')){
-    const css=document.createElement('link');css.rel='stylesheet';css.href='horse-v5.css';document.head.appendChild(css);
-  }
-  if(!document.querySelector('script[src="horse-v5.js"]')){
-    const js=document.createElement('script');js.src='horse-v5.js';document.body.appendChild(js);
-  }
-  if(!document.querySelector('link[href="sportsbook-v3.css"]')){
-    const css=document.createElement('link');css.rel='stylesheet';css.href='sportsbook-v3.css';document.head.appendChild(css);
-  }
-  if(!document.querySelector('script[src="sportsbook-v3.js"]')){
-    const js=document.createElement('script');js.src='sportsbook-v3.js';document.body.appendChild(js);
-  }
+  const style=src=>{if(document.querySelector(`link[href="${src}"]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=src;document.head.appendChild(x)};
+  const script=src=>new Promise((resolve,reject)=>{if(document.querySelector(`script[src="${src}"]`))return resolve();const x=document.createElement('script');x.src=src;x.async=false;x.onload=resolve;x.onerror=reject;document.body.appendChild(x)});
+  style('horse-v5.css');style('sportsbook-v3.css');style('sportsbook-v4.css');
+  script('horse-v5.js').then(()=>script('sportsbook-v3.js')).then(()=>script('sportsbook-v4.js')).catch(err=>console.error('Sportsbook enhancement load failed',err));
 })();
