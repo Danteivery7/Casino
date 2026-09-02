@@ -18,6 +18,7 @@
   const SILKS=['#a53c45','#326aa3','#c79b2b','#7354a6','#258264','#d06e31','#a32974','#21686f','#7c4b22','#4356a9','#84342e','#4c7a2f'];
   const STORAGE_QUEUE='neonRoyaleHorseNameQueueV4';
   const STORAGE_RACE_NO='neonRoyaleHorseRaceNoV4';
+  const STORAGE_VIEW='neonRoyaleHorseViewV4';
 
   function u32(){if(window.crypto?.getRandomValues){const a=new Uint32Array(1);window.crypto.getRandomValues(a);return a[0]}return Math.floor(Math.random()*U32)}
   function rand(){return u32()/U32}
@@ -91,7 +92,7 @@
     const fracs=decimals.map(frac);
     const market=marketSummary(probs,decimals);
     state.horseBet=null;
-    let racing=false,viewMode='track';
+    let racing=false,viewMode=localStorage.getItem(STORAGE_VIEW)==='immersive'?'immersive':'track';
 
     $('#gameMount').innerHTML=`
       <div class="casino-room room-horses horse-v4">
@@ -99,7 +100,7 @@
         <div class="room-topline"><span class="rules-badge">WIN MARKET · 10% SIMULATED TRACK TAKE · NEW FIELD EVERY RACE</span>${betControls('horseStake',100)}</div>
         <div class="horse-view-settings">
           <div><small>RACE CAMERA</small><b>Choose how you watch after the gates open.</b></div>
-          <div class="horse-view-tabs"><button class="active" data-horse-view="track">TRACK VIEW</button><button data-horse-view="immersive">IMMERSIVE VIEW</button></div>
+          <div class="horse-view-tabs"><button class="${viewMode==='track'?'active':''}" data-horse-view="track">TRACK VIEW</button><button class="${viewMode==='immersive'?'active':''}" data-horse-view="immersive">IMMERSIVE VIEW</button></div>
         </div>
         <div class="racebook betting-only">
           <div class="race-call" id="raceCall">SELECT A RUNNER</div>
@@ -113,7 +114,7 @@
 
     wireQuickBets($('#gameMount'));
     $('#horseBackSports').onclick=backToSportsbook;
-    $$('[data-horse-view]').forEach(b=>b.onclick=()=>{if(racing)return;viewMode=b.dataset.horseView;$$('[data-horse-view]').forEach(x=>x.classList.toggle('active',x===b));pulse(b,'action-pulse')});
+    $$('[data-horse-view]').forEach(b=>b.onclick=()=>{if(racing)return;viewMode=b.dataset.horseView;localStorage.setItem(STORAGE_VIEW,viewMode);$$('[data-horse-view]').forEach(x=>x.classList.toggle('active',x===b));pulse(b,'action-pulse')});
     $('#refreshRace').onclick=()=>{if(!racing)window.renderHorses()};
     $$('.horse-line').forEach(x=>x.onclick=()=>{if(racing)return;$$('.horse-line').forEach(y=>y.classList.remove('active'));x.classList.add('active');pulse(x,'chip-drop');state.horseBet=+x.dataset.horse;$('#raceCall').textContent=`TICKET · #${state.horseBet+1} ${names[state.horseBet]}`;$('#horseTicket').innerHTML=`<b>#${state.horseBet+1} ${names[state.horseBet]}</b><span>${fracs[state.horseBet]} · ${decimals[state.horseBet].toFixed(2)}× total return · ${(probs[state.horseBet]*100).toFixed(1)}% model chance · ${viewMode==='immersive'?'Immersive':'Track'} camera</span>`});
 
@@ -147,7 +148,9 @@
       await new Promise(resolve=>{function frame(now){
         const elapsed=now-start,t=Math.min(1,elapsed/raceDuration),dt=Math.max(0,t-lastT);lastT=t;
         for(let i=0;i<6;i++)dist[i]+=speedAt(profiles[i],t)*dt;
-        if(t>.972)dist[winner]+=dt*.11;
+        const leaderBefore=Math.max(...dist);
+        if(t>.90&&dist[winner]<leaderBefore){const closing=clamp((t-.90)/.10,0,1);dist[winner]+=(leaderBefore-dist[winner])*(.08+closing*.30)}
+        if(t>.995)dist[winner]=Math.max(dist[winner],Math.max(...dist)+.0005);
         const order=Array.from({length:6},(_,i)=>i).sort((a,b)=>dist[b]-dist[a]),leader=order[0],leaderDist=Math.max(...dist,0.0001),trailerDist=Math.min(...dist);
         for(let i=0;i<6;i++){
           const normalized=Math.min(.999,dist[i]/leaderDist*t),xy=progressToXY(normalized,i);
