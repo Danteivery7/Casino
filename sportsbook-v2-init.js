@@ -14,6 +14,7 @@
   style('sportsbook-v4.css');
   style('integrity-v1.css');
   style('mobile-v1.css');
+  style('motorsports-fix-v3.css');
   script('horse-v5.js')
     .then(()=>script('sportsbook-v3.js'))
     .then(()=>script('sportsbook-v4.js'))
