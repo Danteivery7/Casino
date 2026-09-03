@@ -19,5 +19,6 @@
     .then(()=>script('sportsbook-v4.js'))
     .then(()=>script('integrity-v1.js'))
     .then(()=>script('roulette-fix-v2.js'))
+    .then(()=>script('slots-reel-fix-v2.js'))
     .catch(err=>console.error('Casino enhancement load failed',err));
 })();
