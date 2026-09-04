@@ -1,0 +1,22 @@
+/* Motorsports v4 — asphalt circuit, borders, grid markings, visible pit lane */
+.motorsports-v4 .motor-stage-v4{background:radial-gradient(circle at 50% 48%,#2f5a31 0,#1d4324 55%,#102817 100%);border:10px solid #27221c!important;box-shadow:inset 0 0 0 2px #75644b,inset 0 0 80px #0008,0 14px 30px #0009!important}
+.motorsports-v4 .motor-stage-v4:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,#ffffff05 0 1px,transparent 1px 20px),repeating-linear-gradient(90deg,#00000008 0 1px,transparent 1px 20px);pointer-events:none}
+.motorsports-v4 .motor-track-v4{inset:2%!important;width:96%!important;height:96%!important;filter:drop-shadow(0 8px 5px #000a)}
+.motorsports-v4 .motor-track-v4 polyline,.motorsports-v4 .motor-track-v4 line{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.motorsports-v4 .track-shadow{stroke:#090a0b;stroke-width:18}
+.motorsports-v4 .track-curb-red{stroke:#b6232c;stroke-width:15.8}
+.motorsports-v4 .track-curb-white{stroke:#f0eee8;stroke-width:15.8;stroke-dasharray:2.2 2.2}
+.motorsports-v4 .track-asphalt{stroke:#34383e;stroke-width:12.6}
+.motorsports-v4 .track-center-dash{stroke:#d7d7d7aa;stroke-width:.65;stroke-dasharray:2.4 2.8}
+.motorsports-v4 .pit-lane{stroke:#555b61;stroke-width:5.2;stroke-dasharray:1.2 .8}
+.motorsports-v4 .start-grid-line{stroke:#f2f2f2aa;stroke-width:.52}
+.motorsports-v4 .finish-line-base{stroke:#fff;stroke-width:2.5;stroke-linecap:butt!important}
+.motorsports-v4 .finish-line-check{stroke:#111;stroke-width:2.5;stroke-dasharray:1.15 1.15;stroke-linecap:butt!important}
+.motor-start-label,.motor-pit-label{position:absolute;z-index:7;padding:4px 6px;border-radius:5px;background:#070907cc;color:#ddd;font:800 7px Inter;letter-spacing:.08em;pointer-events:none}
+.motor-start-label{right:18px;bottom:18px}.motor-pit-label{right:18px;bottom:40px;color:#f0cd6e}
+.motorsports-v4 .race-car{border-color:#eef1f4;box-shadow:0 2px 0 #111,0 4px 9px #000b;transition:left .075s linear,top .075s linear,filter .2s,transform .2s}
+.motorsports-v4 .race-car.pitting{filter:brightness(.72) saturate(.65);transform:translate(-50%,-50%) scale(.88);box-shadow:0 0 0 2px #f0c95c,0 0 12px #f0c95c88}
+.pit-status-panel{position:absolute;right:12px;top:50px;z-index:31;min-width:145px;padding:7px 8px;border:1px solid #e1bd5d44;border-radius:8px;background:#050705df;display:grid;gap:3px;backdrop-filter:blur(6px)}
+.pit-status-panel span{display:flex;justify-content:space-between;gap:10px;font-size:7px;color:#bdb6a7}.pit-status-panel b{color:#f1d06e}.pit-status-panel small{font-size:7px;color:#9c9587}
+@media(max-width:700px){.motorsports-v4 .motor-stage-v4{border-width:6px!important}.pit-status-panel{right:7px;top:44px;min-width:110px;padding:5px}.motor-start-label,.motor-pit-label{font-size:6px;right:8px}.motor-start-label{bottom:10px}.motor-pit-label{bottom:29px}}
+@media(max-width:420px){.motorsports-v4 .track-shadow{stroke-width:14}.motorsports-v4 .track-curb-red,.motorsports-v4 .track-curb-white{stroke-width:12.4}.motorsports-v4 .track-asphalt{stroke-width:9.8}.pit-status-panel{max-width:110px}}
