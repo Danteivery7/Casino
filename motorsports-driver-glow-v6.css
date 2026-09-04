@@ -1,0 +1,41 @@
+/* Motorsports v6 — selected driver must stay visually obvious for the entire race */
+.motorsports-v4 .race-car.your-car,
+.motorsports-v5 .race-car.your-car,
+.motorsports-v6 .race-car.your-car{
+  border-color:#fff3a3!important;
+  box-shadow:
+    0 0 0 3px #ffe278,
+    0 0 10px 4px rgba(255,226,120,.95),
+    0 0 24px 9px rgba(255,196,52,.58),
+    0 4px 10px rgba(0,0,0,.85)!important;
+  z-index:60!important;
+  animation:nrSelectedDriverGlow .8s ease-in-out infinite alternate!important;
+}
+
+/* Keep the highlight even while the selected driver is in the pits. */
+.motorsports-v4 .race-car.your-car.pitting,
+.motorsports-v5 .race-car.your-car.pitting,
+.motorsports-v6 .race-car.your-car.pitting{
+  border-color:#fff3a3!important;
+  box-shadow:
+    0 0 0 3px #ffe278,
+    0 0 12px 5px rgba(255,226,120,.95),
+    0 0 28px 10px rgba(255,196,52,.62)!important;
+}
+
+/* Selected driver remains highlighted on the pre-race grid too. */
+.motor-grid-intro-v3 span.you{
+  border-color:#ffe278!important;
+  background:#332a0e!important;
+  color:#fff4bf!important;
+  box-shadow:0 0 0 2px rgba(255,226,120,.45),0 0 18px rgba(255,196,52,.35)!important;
+}
+
+@keyframes nrSelectedDriverGlow{
+  from{box-shadow:0 0 0 3px #ffe278,0 0 8px 3px rgba(255,226,120,.8),0 0 18px 7px rgba(255,196,52,.42),0 4px 10px rgba(0,0,0,.85)}
+  to{box-shadow:0 0 0 3px #fff0a0,0 0 14px 6px rgba(255,232,140,1),0 0 32px 12px rgba(255,196,52,.68),0 4px 10px rgba(0,0,0,.85)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .race-car.your-car{animation:none!important}
+}
