@@ -1,6 +1,9 @@
-/* Neon Royale Roulette multi-bet UI */
-.roulette-multi-summary{margin:8px 0 12px;padding:11px 12px;border:1px solid #ffffff16;border-radius:11px;background:#080a08;display:grid;gap:4px}
-.roulette-multi-summary b{font-size:10px;letter-spacing:.09em;color:#e7c971}.roulette-multi-summary span{font-size:9px;line-height:1.45;color:#d4ccbe;word-break:break-word}.roulette-multi-summary small{font-size:8px;color:#8f887b}
+/* Neon Royale Roulette chip betting UI */
+.roulette-multi-summary{margin:8px 0 12px;padding:10px 12px;border:1px solid #ffffff16;border-radius:11px;background:#080a08;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.roulette-multi-summary b{font-size:10px;letter-spacing:.09em;color:#e7c971}.roulette-multi-summary small{font-size:8px;color:#8f887b}
+.roulette-multibet-v3 .roulette-bet-btn{position:relative}
 .roulette-multibet-v3 .roulette-bet-btn.active{outline:2px solid #f2d277;box-shadow:0 0 0 2px #0007,0 0 15px #dfbd6766;filter:brightness(1.15)}
+.roulette-chip-count{position:absolute;right:3px;top:3px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:#f0cf76;color:#171109;font:900 8px/17px Inter;text-align:center;font-style:normal;box-shadow:0 2px 6px #0008}
+.roulette-chip-count:empty{display:none}
 .roulette-win-breakdown{margin-top:6px;font-size:9px;color:#d5c69e;line-height:1.4}
-@media(max-width:640px){.roulette-multi-summary{padding:9px}.roulette-multi-summary span{font-size:8px}.roulette-multibet-v3 .game-actions{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.roulette-multi-summary{padding:9px;flex-direction:column;align-items:flex-start}.roulette-multibet-v3 .game-actions{grid-template-columns:1fr 1fr}.roulette-chip-count{right:2px;top:2px}}
