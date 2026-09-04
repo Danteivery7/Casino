@@ -1,0 +1,22 @@
+/* Motorsports v5 — road geometry must use the exact same coordinate box as the cars */
+.motorsports-v4 .motor-track-v4,
+.motorsports-v5 .motor-track-v4{
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+}
+
+/* Slightly widen the asphalt so the car centers read clearly as being ON the circuit. */
+.motorsports-v4 .track-shadow,.motorsports-v5 .track-shadow{stroke-width:20}
+.motorsports-v4 .track-curb-red,.motorsports-v5 .track-curb-red{stroke-width:17.4}
+.motorsports-v4 .track-curb-white,.motorsports-v5 .track-curb-white{stroke-width:17.4}
+.motorsports-v4 .track-asphalt,.motorsports-v5 .track-asphalt{stroke-width:14.2}
+
+@media(max-width:420px){
+  .motorsports-v4 .track-shadow,.motorsports-v5 .track-shadow{stroke-width:16}
+  .motorsports-v4 .track-curb-red,.motorsports-v5 .track-curb-red,
+  .motorsports-v4 .track-curb-white,.motorsports-v5 .track-curb-white{stroke-width:14}
+  .motorsports-v4 .track-asphalt,.motorsports-v5 .track-asphalt{stroke-width:11.6}
+}
