@@ -1,0 +1,4 @@
+/* Neon Royale audio controls */
+#soundToggle{white-space:nowrap;transition:background .16s,color .16s,border-color .16s}
+#soundToggle.active{background:#d7ae5814!important;color:#f0d27d!important;box-shadow:inset 0 0 0 1px #d7ae5830}
+@media(max-width:640px){#soundToggle{min-height:38px;padding:7px 10px!important;font-size:9px!important}}
