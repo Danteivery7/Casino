@@ -3,6 +3,10 @@
   const N=window.NRSPORTS2;if(!N)return;
   const pt=(points,z)=>{const n=points.length,p=((z%1)+1)%1*n,i=Math.floor(p),f=p-i,a=points[i%n],b=points[(i+1)%n];return{x:a[0]+(b[0]-a[0])*f,y:a[1]+(b[1]-a[1])*f}};
   const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=N.ri(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+  function renderPoint(points,z,offset=0){
+    const q=pt(points,z),a=pt(points,z-.0025),b=pt(points,z+.0025),dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+    return{x:q.x+(-dy/len)*offset,y:q.y+(dx/len)*offset};
+  }
   function geometry(points){
     const a=points[0],b=points[1],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
     const line=(x,y,w=6.9)=>({x1:x-nx*w,y1:y-ny*w,x2:x+nx*w,y2:y+ny*w});
@@ -41,18 +45,21 @@
 
     const gridOrder=shuffle(Array.from({length:15},(_,i)=>i)),prog=Array(15).fill(0);
     for(let pos=0;pos<gridOrder.length;pos++){
-      const i=gridOrder[pos],z=(pos/15)*.014,q=pt(race.track.p,z),car=$('#car'+i,o);if(car){car.style.left=q.x+'%';car.style.top=q.y+'%';car.style.zIndex=String(30-pos)}
+      const i=gridOrder[pos],z=(pos/15)*.014,q=renderPoint(race.track.p,z,(pos%2?1:-1)*1.05),car=$('#car'+i,o);if(car){car.style.left=q.x+'%';car.style.top=q.y+'%';car.style.zIndex=String(30-pos)}
     }
     $('#motorLeaders',o).innerHTML=gridOrder.slice(0,5).map((idx,p)=>`<span class="${idx===pickIndex?'you':''}"><b>G${p+1}</b>#${idx+1} ${race.names[idx]}</span>`).join('');
 
-    const intro=document.createElement('div');intro.className='motor-intro-v3';intro.innerHTML=`<small>NEON ROYALE MOTORSPORTS</small><h1>${race.track.name}</h1><p>${race.track.type} · 15-driver field · 5 laps · varied mandatory pit stop on lap 4</p><div class="motor-grid-intro-v3">${race.names.map((n,i)=>`<span class="${i===pickIndex?'you':''}"><b>#${String(i+1).padStart(2,'0')}</b>${n}</span>`).join('')}</div><strong id="motorStartCount">GRID SET</strong>`;o.appendChild(intro);
+    const intro=document.createElement('div');intro.className='motor-intro-v3';intro.innerHTML=`<small>NEON ROYALE MOTORSPORTS</small><h1>${race.track.name}</h1><p>${race.track.type} · 15-driver field · live overtakes · 5 laps · varied mandatory pit stop on lap 4</p><div class="motor-grid-intro-v3">${race.names.map((n,i)=>`<span class="${i===pickIndex?'you':''}"><b>#${String(i+1).padStart(2,'0')}</b>${n}</span>`).join('')}</div><strong id="motorStartCount">GRID SET</strong>`;o.appendChild(intro);
     const count=$('#motorStartCount',intro);await N.sleep(900);for(const t of ['3','2','1','LIGHTS OUT!']){count.textContent=t;count.classList.remove('pop');void count.offsetWidth;count.classList.add('pop');await N.sleep(600)}intro.classList.add('out');await N.sleep(320);intro.remove();
 
-    const base=race.ratings.map(x=>.88+(x-72)/120),pace=base.map(x=>x*(.965+N.rand()*.075));
+    const avgRating=race.ratings.reduce((a,b)=>a+b,0)/race.ratings.length;
+    const base=race.ratings.map(x=>1+(x-avgRating)*.0025),pace=base.map(x=>x*(.985+N.rand()*.03));
+    const phaseA=Array.from({length:15},()=>N.rand()*Math.PI*2),phaseB=Array.from({length:15},()=>N.rand()*Math.PI*2),surgeStart=Array.from({length:15},()=>.25+N.rand()*4.3),surgePower=Array.from({length:15},()=>.015+N.rand()*.055);
     const pitStarted=Array(15).fill(false),pitUntil=Array(15).fill(0),pitService=Array(15).fill(0),pitDone=Array(15).fill(false);
-    const dur=prefersReducedMotion()?14000:N.DUR.motorsports;let last=performance.now();
+    const dur=prefersReducedMotion()?14000:N.DUR.motorsports;let last=performance.now(),lastOrder=[...gridOrder],lastPassAt=0;
     await new Promise(res=>{function frame(now){
       const dt=Math.min(.06,(now-last)/dur);last=now;
+      const currentOrder=Array.from({length:15},(_,i)=>i).sort((a,b)=>prog[b]-prog[a]),leaderBefore=currentOrder[0],leadProg=prog[leaderBefore],lastProg=prog[currentOrder.at(-1)],spread=leadProg-lastProg;
       for(let i=0;i<15;i++){
         const lap=Math.floor(prog[i]);
         if(lap===3&&!pitStarted[i]){
@@ -63,19 +70,30 @@
           if(now<pitUntil[i])continue;
           pitDone[i]=true;const car=$('#car'+i,o);car?.classList.remove('pitting');
         }
-        prog[i]+=pace[i]*dt*5*(1+Math.sin(now/520+i)*.012);
+        const gap=leadProg-prog[i],pos=currentOrder.indexOf(i),ahead=pos>0?currentOrder[pos-1]:null,aheadGap=ahead==null?Infinity:prog[ahead]-prog[i];
+        const rhythm=1+Math.sin(now/430+phaseA[i])*.055+Math.sin(now/1120+phaseB[i])*.035;
+        const lapWave=1+Math.sin(prog[i]*Math.PI*2+phaseB[i])*.04;
+        const sd=(prog[i]-surgeStart[i])/.15,surge=surgePower[i]*Math.exp(-sd*sd);
+        const draft=aheadGap>0&&aheadGap<.04?1.03:aheadGap<.07?1.015:1;
+        const catchup=spread>.20?1+Math.min(.065,(gap/Math.max(spread,.001))*.065):1;
+        const leaderDamp=i===leaderBefore&&currentOrder.length>1&&(prog[leaderBefore]-prog[currentOrder[1]])>.075?.97:1;
+        prog[i]+=(pace[i]*rhythm*lapWave*draft*catchup*leaderDamp+surge)*dt*5;
       }
       const order=Array.from({length:15},(_,i)=>i).sort((a,b)=>prog[b]-prog[a]),leader=order[0],lap=Math.min(5,Math.floor(prog[leader])+1);
       $('#v2Clock',o).textContent=`LAP ${lap} / 5`;
       $('#motorLeaders',o).innerHTML=order.slice(0,6).map((idx,p)=>`<span class="${idx===pickIndex?'you':''}"><b>${p+1}</b>#${idx+1} ${race.names[idx]}${pitStarted[idx]&&!pitDone[idx]?' · PIT':''}</span>`).join('');
       const active=[];for(let i=0;i<15;i++)if(pitStarted[i]&&!pitDone[i])active.push({i,left:Math.max(0,pitUntil[i]-now)});
       $('#pitStatus',o).innerHTML=active.length?active.slice(0,5).map(x=>`<span>#${x.i+1} <b>${(x.left/1000).toFixed(1)}s</b></span>`).join(''):'<small>'+((pitDone.filter(Boolean).length)?`${pitDone.filter(Boolean).length}/15 pit stops complete`:'Pit lane opens on lap 4')+'</small>';
-      $('#v2Ticker',o).textContent=active.length?'PIT STOPS':lap===4?'PIT CYCLE':lap===5?'FINAL LAP':'RACE UPDATE';
-      if(active.length){const x=active[0];$('#v2TickerText',o).textContent=`#${x.i+1} ${race.names[x.i]} is stopped for service · ${(x.left/1000).toFixed(1)}s remaining.`}
-      else $('#v2TickerText',o).textContent=`#${leader+1} ${race.names[leader]} leads the 15-car field.`;
-      for(let i=0;i<15;i++){
-        if(pitStarted[i]&&!pitDone[i])continue;
-        const q=pt(race.track.p,prog[i]),car=$('#car'+i,o);if(car){car.style.left=q.x+'%';car.style.top=q.y+'%'}
+      let pass=null;
+      if(now-lastPassAt>500){for(let p=0;p<order.length;p++){const idx=order[p],old=lastOrder.indexOf(idx);if(old>=0&&p<old){pass={idx,from:old+1,to:p+1};break}}}
+      if(pass){lastPassAt=now;$('#v2Ticker',o).textContent='OVERTAKE';$('#v2TickerText',o).textContent=`#${pass.idx+1} ${race.names[pass.idx]} moves from P${pass.from} to P${pass.to}.`}
+      else if(active.length){const x=active[0];$('#v2Ticker',o).textContent='PIT STOPS';$('#v2TickerText',o).textContent=`#${x.i+1} ${race.names[x.i]} is stopped for service · ${(x.left/1000).toFixed(1)}s remaining.`}
+      else{$('#v2Ticker',o).textContent=lap===4?'PIT CYCLE':lap===5?'FINAL LAP':'RACE UPDATE';$('#v2TickerText',o).textContent=`#${leader+1} ${race.names[leader]} leads a constantly changing pack.`}
+      lastOrder=[...order];
+      for(let pos=0;pos<order.length;pos++){
+        const i=order[pos];if(pitStarted[i]&&!pitDone[i])continue;
+        const ahead=pos>0?order[pos-1]:null,behind=pos<order.length-1?order[pos+1]:null,close=(ahead!=null&&Math.abs(prog[ahead]-prog[i])<.022)||(behind!=null&&Math.abs(prog[i]-prog[behind])<.022);
+        const offset=close?((i%5)-2)*1.05:((i%3)-1)*.35,q=renderPoint(race.track.p,prog[i],offset),car=$('#car'+i,o);if(car){car.style.left=q.x+'%';car.style.top=q.y+'%';car.style.zIndex=String(i===pickIndex?60:20+(15-pos))}
       }
       if(prog[leader]>=5)res();else requestAnimationFrame(frame)
     }requestAnimationFrame(frame)});
