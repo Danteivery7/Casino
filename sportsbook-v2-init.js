@@ -22,6 +22,7 @@
     .then(()=>script('integrity-v1.js'))
     .then(()=>script('roulette-fix-v2.js'))
     .then(()=>script('roulette-multibet-v3.js'))
+    .then(()=>script('roulette-chip-amount-v4.js'))
     .then(()=>script('slots-reel-fix-v2.js'))
     .catch(err=>console.error('Casino enhancement load failed',err));
 })();
