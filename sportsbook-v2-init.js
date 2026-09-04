@@ -17,6 +17,7 @@
   style('motorsports-fix-v3.css');
   style('motorsports-track-v4.css');
   style('motorsports-track-align-v5.css');
+  style('motorsports-driver-glow-v6.css');
   style('roulette-multibet-v3.css');
   style('audio-v2.css');
   script('horse-v5.js')
