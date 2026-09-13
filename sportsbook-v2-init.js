@@ -31,6 +31,7 @@
     .then(()=>script('slots-reel-fix-v2.js'))
     .then(()=>script('motorsports-track-v4.js'))
     .then(()=>script('motorsports-track-align-v5.js'))
+    .then(()=>script('tennis-match-fix-v2.js'))
     .then(()=>script('audio-v2.js'))
     .catch(err=>console.error('Casino enhancement load failed',err));
 })();
