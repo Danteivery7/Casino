@@ -20,6 +20,7 @@
   style('motorsports-driver-glow-v6.css');
   style('roulette-multibet-v3.css');
   style('audio-v2.css');
+  style('tennis-view-fix-v1.css');
   script('horse-v5.js')
     .then(()=>script('sportsbook-v3.js'))
     .then(()=>script('sportsbook-v4.js'))
