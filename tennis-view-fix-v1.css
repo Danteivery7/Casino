@@ -1,0 +1,56 @@
+/* Neon Royale Tennis viewport fix
+   Keep the entire court + scoreline inside the fixed sports broadcast viewport. */
+.sports-v2-broadcast.tennis .racquet-stage,
+.sports-v2-broadcast.tabletennis .racquet-stage{
+  min-height:0!important;
+  height:auto!important;
+  margin:8px 16px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+
+.sports-v2-broadcast.tennis .racquet-court,
+.sports-v2-broadcast.tabletennis .racquet-court{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  height:auto!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+
+.sports-v2-broadcast.tabletennis .racquet-court{
+  max-width:760px!important;
+  margin:0 auto!important;
+}
+
+.sports-v2-broadcast.tennis .racquet-scoreline,
+.sports-v2-broadcast.tabletennis .racquet-scoreline{
+  flex:0 0 auto!important;
+  margin:5px 0 0!important;
+  min-height:20px;
+  line-height:20px;
+}
+
+/* Ensure both baseline players remain visibly inside the court. */
+.sports-v2-broadcast.tennis .racquet-player.a,
+.sports-v2-broadcast.tabletennis .racquet-player.a{left:7%!important}
+.sports-v2-broadcast.tennis .racquet-player.b,
+.sports-v2-broadcast.tabletennis .racquet-player.b{right:7%!important}
+
+@media(max-width:700px){
+  .sports-v2-broadcast.tennis .racquet-stage,
+  .sports-v2-broadcast.tabletennis .racquet-stage{margin:5px 7px!important}
+  .sports-v2-broadcast.tennis .racquet-scoreline,
+  .sports-v2-broadcast.tabletennis .racquet-scoreline{font-size:11px;min-height:17px;line-height:17px}
+  .sports-v2-broadcast.tennis .racquet-player,
+  .sports-v2-broadcast.tabletennis .racquet-player{padding:8px!important;font-size:9px!important}
+}
+
+@media(max-height:620px){
+  .sports-v2-broadcast.tennis .racquet-stage,
+  .sports-v2-broadcast.tabletennis .racquet-stage{margin:3px 7px!important}
+  .sports-v2-broadcast.tennis .racquet-scoreline,
+  .sports-v2-broadcast.tabletennis .racquet-scoreline{margin-top:2px!important;min-height:15px;line-height:15px;font-size:9px}
+}
