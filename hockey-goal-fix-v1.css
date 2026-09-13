@@ -1,0 +1,11 @@
+/* Neon Royale Hockey goal alignment fix */
+.sports-v2-broadcast .hockey-rink .net.left{
+  left:4%!important;
+  right:auto!important;
+  top:40%!important;
+}
+.sports-v2-broadcast .hockey-rink .net.right{
+  right:4%!important;
+  left:auto!important;
+  top:40%!important;
+}
